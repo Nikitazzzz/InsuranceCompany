@@ -1,17 +1,6 @@
-# Этап сборки
-FROM maven:3.8.4-openjdk-11 AS build
+FROM eclipse-temurin:11-jre
 WORKDIR /app
-COPY . .
-RUN mvn clean package
-
-# Этап запуска
-FROM openjdk:11-jre-slim
-WORKDIR /app
-COPY --from=build /app/target/*.war app.war
-
-# Render автоматически устанавливает переменную PORT
+COPY target/*.war app.jar
 ENV PORT 8080
 EXPOSE 8080
-
-# Запуск приложения
-CMD ["java", "-jar", "app.war"]
+CMD ["java", "-jar", "app.jar"]
